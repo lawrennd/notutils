@@ -1,1 +1,1 @@
-from . import notebook
+from .notutils import *
