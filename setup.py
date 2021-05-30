@@ -26,6 +26,7 @@ VERSION = "v0.0.1"
 # What packages are required for this module to be executed?
 REQUIRED = [
     "IPython",
+    "ipywidgets",
 ]
 
 # What packages are optional?
