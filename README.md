@@ -3,6 +3,7 @@
 Jupyter Notebook Utilities for Python
 
 [![Tests](https://github.com/lawrennd/notutils/workflows/Test%20and%20Coverage/badge.svg)](https://github.com/lawrennd/notutils/actions?query=workflow%3A%22Test+and+Coverage%22)
+[![codecov](https://codecov.io/gh/lawrennd/notutils/branch/main/graph/badge.svg)](https://codecov.io/gh/lawrennd/notutils)
 
 ---
 
