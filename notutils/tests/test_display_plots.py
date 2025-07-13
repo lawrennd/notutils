@@ -204,3 +204,46 @@ class TestDisplayPlots:
         else:
             filebase_value = kwargs['filebase']
         assert filebase_value == filebase 
+
+class TestDisplayPlotsEdgeCases:
+    @patch('notutils.notutils.display')
+    @patch('notutils.notutils.SVG')
+    def test_display_plots_svg(self, mock_svg, mock_display):
+        display_plots('plot.svg', directory=None)
+        mock_svg.assert_called()
+        mock_display.assert_called()
+
+    @patch('notutils.notutils.display')
+    @patch('notutils.notutils.Image')
+    def test_display_plots_png(self, mock_image, mock_display):
+        display_plots('plot.png', directory=None)
+        mock_image.assert_called()
+        mock_display.assert_called()
+
+    @patch('notutils.notutils.display')
+    @patch('notutils.notutils.Image')
+    def test_display_plots_jpg(self, mock_image, mock_display):
+        display_plots('plot.jpg', directory=None)
+        mock_image.assert_called()
+        mock_display.assert_called()
+
+    @patch('notutils.notutils.display')
+    @patch('notutils.notutils.Image')
+    def test_display_plots_gif(self, mock_image, mock_display):
+        display_plots('plot.gif', directory=None)
+        mock_image.assert_called()
+        mock_display.assert_called()
+
+    @patch('notutils.notutils.display')
+    @patch('notutils.notutils.Image')
+    def test_display_plots_jpeg(self, mock_image, mock_display):
+        display_plots('plot.jpeg', directory=None)
+        mock_image.assert_called()
+        mock_display.assert_called()
+
+    @patch('notutils.notutils.display')
+    @patch('notutils.notutils.IFrame')
+    def test_display_plots_html(self, mock_iframe, mock_display):
+        display_plots('plot.html', directory=None)
+        mock_iframe.assert_called()
+        mock_display.assert_called() 

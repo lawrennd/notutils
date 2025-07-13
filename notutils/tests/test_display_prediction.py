@@ -138,3 +138,97 @@ class TestDisplayPrediction:
         mock_interact.assert_called_once()
         if mock_subplots.call_count > 0:
             mock_subplots.assert_called_once_with(figsize=(12, 4)) 
+
+
+class TestDisplayPredictionFullCoverage:
+    @patch('notutils.notutils.display')
+    @patch('notutils.notutils.interact')
+    @patch('matplotlib.pyplot.subplots')
+    @patch('matplotlib.pyplot.close')
+    def test_generate_function_display_basis_true(self, mock_close, mock_subplots, mock_interact, mock_display):
+        mock_fig = MagicMock()
+        mock_ax = MagicMock()
+        mock_ax.get_xlim.return_value = (-2.0, 2.0)
+        mock_ax.get_ylim.return_value = (-1.0, 1.0)
+        mock_ax.plot.return_value = [MagicMock() for _ in range(4)]
+        mock_subplots.return_value = (mock_fig, mock_ax)
+        def mock_basis(x, num_basis, **kwargs):
+            return np.ones((x.shape[0], num_basis))
+        # Call with display_basis True by patching interact to call the function
+        def fake_interact(func, **kwargs):
+            # Simulate slider values
+            func(
+                basis=mock_basis,
+                num_basis=4,
+                predline=MagicMock(),
+                basislines=[MagicMock() for _ in range(4)],
+                basis_args={},
+                display_basis=True,
+                offset=0.0,
+                w_0=0.0, w_1=0.0, w_2=0.0, w_3=0.0
+            )
+        mock_interact.side_effect = fake_interact
+        display_prediction(mock_basis)
+        mock_interact.assert_called()
+        mock_display.assert_called()
+
+    @patch('notutils.notutils.display')
+    @patch('notutils.notutils.interact')
+    @patch('matplotlib.pyplot.subplots')
+    @patch('matplotlib.pyplot.close')
+    def test_generate_function_display_basis_false(self, mock_close, mock_subplots, mock_interact, mock_display):
+        mock_fig = MagicMock()
+        mock_ax = MagicMock()
+        mock_ax.get_xlim.return_value = (-2.0, 2.0)
+        mock_ax.get_ylim.return_value = (-1.0, 1.0)
+        mock_ax.plot.return_value = [MagicMock() for _ in range(4)]
+        mock_subplots.return_value = (mock_fig, mock_ax)
+        def mock_basis(x, num_basis, **kwargs):
+            return np.ones((x.shape[0], num_basis))
+        def fake_interact(func, **kwargs):
+            func(
+                basis=mock_basis,
+                num_basis=4,
+                predline=MagicMock(),
+                basislines=[MagicMock() for _ in range(4)],
+                basis_args={},
+                display_basis=False,
+                offset=0.0,
+                w_0=0.0, w_1=0.0, w_2=0.0, w_3=0.0
+            )
+        mock_interact.side_effect = fake_interact
+        display_prediction(mock_basis)
+        mock_interact.assert_called()
+        mock_display.assert_called()
+
+    @patch('notutils.notutils.display')
+    @patch('notutils.notutils.interact')
+    @patch('matplotlib.pyplot.subplots')
+    @patch('matplotlib.pyplot.close')
+    def test_display_prediction_basis_dict(self, mock_close, mock_subplots, mock_interact, mock_display):
+        mock_fig = MagicMock()
+        mock_ax = MagicMock()
+        mock_ax.get_xlim.return_value = (-2.0, 2.0)
+        mock_ax.get_ylim.return_value = (-1.0, 1.0)
+        mock_ax.plot.return_value = [MagicMock() for _ in range(4)]
+        mock_subplots.return_value = (mock_fig, mock_ax)
+        def mock_basis(x, num_basis, **kwargs):
+            return np.ones((x.shape[0], num_basis))
+        basis_dict = {'test': mock_basis}
+        display_prediction(basis_dict)
+        mock_interact.assert_called()
+        # display may not be called in this branch
+
+    @patch('notutils.notutils.display')
+    @patch('notutils.notutils.interact')
+    def test_display_prediction_with_custom_axes(self, mock_interact, mock_display):
+        mock_fig = MagicMock()
+        mock_ax = MagicMock()
+        mock_ax.get_xlim.return_value = (-5.0, 5.0)
+        mock_ax.get_ylim.return_value = (-3.0, 3.0)
+        mock_ax.plot.return_value = [MagicMock() for _ in range(4)]
+        def mock_basis(x, num_basis, **kwargs):
+            return np.ones((x.shape[0], num_basis))
+        display_prediction(mock_basis, fig=mock_fig, ax=mock_ax, xlim=(-5, 5), ylim=(-3, 3))
+        mock_interact.assert_called()
+        # display may not be called in this branch 
