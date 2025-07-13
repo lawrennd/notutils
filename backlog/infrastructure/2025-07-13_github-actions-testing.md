@@ -1,0 +1,90 @@
+---
+id: "2025-07-13_github-actions-testing"
+title: "Set up GitHub Actions for automated testing and code coverage"
+status: "proposed"
+priority: "high"
+created: "2025-07-13"
+last_updated: "2025-07-13"
+owner: "Neil Lawrence"
+github_issue: ""
+dependencies:
+  - "CIP-0002"
+tags:
+  - "backlog"
+  - "infrastructure"
+  - "ci-cd"
+  - "testing"
+  - "coverage"
+---
+
+# Task: Set up GitHub Actions for automated testing and code coverage
+
+## Description
+
+Implement a GitHub Actions workflow to automatically run tests and generate code coverage reports on every push and pull request. This will ensure code quality is maintained and regressions are caught early in the development process.
+
+The workflow should:
+- Run on multiple Python versions (3.9, 3.10, 3.11, 3.12)
+- Execute all unit tests and integration tests
+- Generate and publish code coverage reports
+- Cache dependencies for faster builds
+- Provide clear feedback on test results and coverage metrics
+- Fail the build if coverage drops below a specified threshold
+
+## Acceptance Criteria
+
+- [ ] GitHub Actions workflow file created in `.github/workflows/`
+- [ ] Tests run automatically on push to main branch
+- [ ] Tests run automatically on pull requests
+- [ ] Multiple Python versions supported (3.9, 3.10, 3.11, 3.12)
+- [ ] Code coverage report generated and published
+- [ ] Coverage threshold enforced (minimum 80% coverage)
+- [ ] Test results clearly displayed in GitHub interface
+- [ ] Dependencies cached for faster builds
+- [ ] Workflow runs in under 5 minutes
+- [ ] Clear error messages when tests fail
+
+## Implementation Notes
+
+### Technical Approach
+1. **Workflow Structure**:
+   - Use `ubuntu-latest` as the runner
+   - Set up Python matrix strategy for multiple versions
+   - Use Poetry for dependency management (already configured)
+
+2. **Test Execution**:
+   - Install dependencies using Poetry
+   - Run pytest with coverage using pytest-cov
+   - Generate coverage reports in multiple formats (HTML, XML)
+
+3. **Coverage Reporting**:
+   - Use Codecov or GitHub's built-in coverage reporting
+   - Set minimum coverage threshold to 80%
+   - Publish coverage reports as artifacts
+
+4. **Caching Strategy**:
+   - Cache Poetry dependencies
+   - Cache pip cache directory
+   - Cache test results if applicable
+
+### Dependencies
+- Requires implementation of CIP-0002 (Comprehensive Testing Framework)
+- pytest and pytest-cov must be added to dev dependencies
+- Coverage threshold configuration needed
+
+### Configuration Files Needed
+- `.github/workflows/test.yml` - Main test workflow
+- `pyproject.toml` - Update with test dependencies
+- `.coveragerc` - Coverage configuration
+- `pytest.ini` - Pytest configuration
+
+## Related
+
+- CIP: 0002 (Comprehensive Testing Framework)
+- PRs: 
+- Documentation: [GitHub Actions Documentation](https://docs.github.com/en/actions)
+
+## Progress Updates
+
+### 2025-07-13
+Task created with Proposed status. Waiting for implementation of CIP-0002 testing framework before proceeding. 
