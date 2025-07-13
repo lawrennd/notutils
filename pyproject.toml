@@ -19,6 +19,8 @@ classifiers = [
 python = ">=3.9"
 IPython = "*"
 ipywidgets = "*"
+numpy = "*"
+matplotlib = "*"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
