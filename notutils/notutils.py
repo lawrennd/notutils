@@ -71,7 +71,6 @@ def display_iframe_url(target: str, **kwargs: Any) -> None:
     
     :param target: The target URL
     :type target: str
-    :param **kwargs: Additional arguments passed to :func:`iframe_url`
 
     .. seealso:: :func:`iframe_url` for additional arguments.
     """
@@ -96,7 +95,6 @@ def display_google_book(
     :type width: int
     :param height: The height of the embedded book (default 450)
     :type height: int
-    :param **kwargs: Additional arguments passed to IFrame
     """
     if isinstance(page, int):
         url = "https://books.google.co.uk/books?id={id}&pg=PA{page}&output=embed".format(
@@ -178,7 +176,6 @@ def display_prediction(
     :type num_points: int
     :param offset: Offset for the first basis function (default 0.0)
     :type offset: float
-    :param **kwargs: Additional arguments passed to the basis function
     """
     import numpy as np
     import pylab as plt
@@ -299,7 +296,6 @@ def display_plots(
     :type width: int
     :param height: Height of the displayed plots (default 450)
     :type height: int
-    :param **kwargs: Additional arguments for the plot display
     """
 
     def show_figure(filebase: str, directory: Optional[str], width: int = 600, height: int = 450, **kwargs: Any) -> None:
