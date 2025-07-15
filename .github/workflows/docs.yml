@@ -39,19 +39,30 @@ jobs:
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
       run: poetry install --with dev
 
-    - name: Install Sphinx
+    - name: Install Sphinx extensions and dependencies
       run: |
-        poetry run pip install sphinx sphinx-rtd-theme
+        poetry run pip install sphinx sphinx-rtd-theme sphinx-autodoc-typehints myst-parser
+        poetry install --with dev
 
     - name: Build documentation
       run: |
         cd docs
         poetry run make html
 
+    - name: Create .nojekyll file
+      run: |
+        touch docs/_build/html/.nojekyll
+
+    - name: Upload documentation artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: documentation
+        path: docs/_build/html/
+
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
       if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/build/html
-        destination_dir: notutils 
+        publish_dir: ./docs/_build/html
+        force_orphan: true 
