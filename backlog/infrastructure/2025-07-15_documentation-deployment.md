@@ -37,17 +37,12 @@ The Sphinx documentation is currently being built successfully by GitHub Actions
 
 ## Implementation Options
 
-### Option 1: GitHub Pages
-- Deploy to GitHub Pages and configure custom domain
+### Option 1: GitHub Pages (Recommended)
+- Deploy to GitHub Pages using gh-pages branch
 - Update GitHub Actions workflow to deploy to gh-pages branch
-- Configure DNS to point inverseprobability.com/notutils to GitHub Pages
+- Documentation will be accessible at inverseprobability.com/notutils (since inverseprobability.com is already a GitHub Pages server)
 
-### Option 2: Direct Server Deployment
-- Deploy documentation directly to inverseprobability.com server
-- Set up automated deployment pipeline
-- Configure web server to serve documentation from appropriate directory
-
-### Option 3: Read the Docs
+### Option 2: Read the Docs
 - Host documentation on Read the Docs platform
 - Configure custom domain
 - Integrate with GitHub repository for automatic builds
