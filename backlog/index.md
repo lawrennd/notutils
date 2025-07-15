@@ -33,7 +33,7 @@ This file provides an overview of all current backlog items organized by categor
 
 ### Proposed
 
-*No tasks currently proposed.*
+- [2025-07-15_documentation-deployment](infrastructure/2025-07-15_documentation-deployment.md) - Deploy Sphinx documentation to inverseprobability.com/notutils
 
 
 ## Features
