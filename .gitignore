@@ -1,5 +1,6 @@
 # Documentation build directory
 docs/build/
+docs/_build/
 
 # Python
 __pycache__/
@@ -34,7 +35,19 @@ htmlcov/
 .idea/
 *.swp
 *.swo
+.cursor/
+
+# Virtual environments
+.venv/
+venv/
+env/
 
 # OS
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Poetry
+poetry.lock
+
+# Temporary files
+*.code-workspace~ 

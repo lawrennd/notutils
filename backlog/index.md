@@ -34,6 +34,7 @@ This file provides an overview of all current backlog items organized by categor
 ### Proposed
 
 - [2025-07-15_documentation-deployment](infrastructure/2025-07-15_documentation-deployment.md) - Deploy Sphinx documentation to inverseprobability.com/notutils
+- [2025-07-15_documentation-404-investigation](infrastructure/2025-07-15_documentation-404-investigation.md) - Investigate 404 error for documentation at inverseprobability.com/notutils
 - [2025-07-15_codecov-rate-limiting](infrastructure/2025-07-15_codecov-rate-limiting.md) - Fix Codecov rate limiting with repository upload token
 
 
