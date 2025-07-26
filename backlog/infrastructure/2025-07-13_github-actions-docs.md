@@ -1,10 +1,10 @@
 ---
 id: "2025-07-13_github-actions-docs"
 title: "Set up GitHub Actions for documentation compilation"
-status: "proposed"
+status: "completed"
 priority: "high"
 created: "2025-07-13"
-last_updated: "2025-07-13"
+last_updated: "2025-07-26"
 owner: "Neil Lawrence"
 github_issue: ""
 dependencies:
@@ -33,14 +33,14 @@ The workflow should:
 
 ## Acceptance Criteria
 
-- [ ] GitHub Actions workflow file created in `.github/workflows/`
-- [ ] Documentation builds automatically on push to main branch
-- [ ] Documentation builds automatically on pull requests
-- [ ] Build artifacts uploaded for review
-- [ ] Build errors reported in GitHub interface
-- [ ] Dependencies cached for faster builds
-- [ ] Workflow runs in under 5 minutes
-- [ ] Optionally: Documentation deployed to GitHub Pages
+- [x] GitHub Actions workflow file created in `.github/workflows/`
+- [x] Documentation builds automatically on push to main branch
+- [x] Documentation builds automatically on pull requests
+- [x] Build artifacts uploaded for review
+- [x] Build errors reported in GitHub interface
+- [x] Dependencies cached for faster builds
+- [x] Workflow runs in under 5 minutes
+- [x] Optionally: Documentation deployed to GitHub Pages
 
 ## Implementation Notes
 
@@ -81,4 +81,12 @@ The workflow should:
 ## Progress Updates
 
 ### 2025-07-13
-Task created with Proposed status. Waiting for implementation of CIP-0001 documentation improvements before proceeding. 
+Task created with Proposed status. Waiting for implementation of CIP-0001 documentation improvements before proceeding.
+
+### 2025-07-26
+Task completed. Implementation found in `.github/workflows/docs.yml` with all acceptance criteria met:
+- Documentation builds on push to main and pull requests
+- Artifacts uploaded for review
+- Dependencies cached via Poetry
+- GitHub Pages deployment configured
+- Workflow completes within time requirements 
