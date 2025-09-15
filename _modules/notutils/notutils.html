@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>notutils.notutils &mdash; notutils 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            notutils
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../api.html#functions">Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#notutils.display_url"><code class="docutils literal notranslate"><span class="pre">display_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#notutils.iframe_url"><code class="docutils literal notranslate"><span class="pre">iframe_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#notutils.display_iframe_url"><code class="docutils literal notranslate"><span class="pre">display_iframe_url()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#notutils.display_google_book"><code class="docutils literal notranslate"><span class="pre">display_google_book()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#notutils.code_toggle"><code class="docutils literal notranslate"><span class="pre">code_toggle()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#notutils.display_prediction"><code class="docutils literal notranslate"><span class="pre">display_prediction()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api.html#notutils.display_plots"><code class="docutils literal notranslate"><span class="pre">display_plots()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">notutils</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">notutils.notutils</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for notutils.notutils</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2014 Open Data Science Initiative and other authors. See AUTHORS.txt</span>
+<span class="c1"># Licensed under the BSD 3-clause license (see LICENSE.txt)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">IPython</span>
+
+<span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">IPython</span><span class="o">.</span><span class="n">__version__</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ipywidgets</span><span class="w"> </span><span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">fixed</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.html.widgets.interaction</span><span class="w"> </span><span class="kn">import</span> <span class="n">interact</span><span class="p">,</span> <span class="n">fixed</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">HTML</span><span class="p">,</span> <span class="n">IFrame</span><span class="p">,</span> <span class="n">Image</span><span class="p">,</span> <span class="n">SVG</span>
+
+
+<div class="viewcode-block" id="display_url"><a class="viewcode-back" href="../../api.html#notutils.display_url">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">display_url</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display a URL in a Jupyter notebook to allow the user to click and check on information.</span>
+<span class="sd">    </span>
+<span class="sd">    With thanks to Fernando Perez for putting together the implementation!</span>
+<span class="sd">    </span>
+<span class="sd">    :param target: The URL to display</span>
+<span class="sd">    :type target: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;http://&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">target</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="sa">u</span><span class="s2">&quot;&quot;</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">target</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="sa">u</span><span class="s1">&#39;&lt;a href=&quot;</span><span class="si">{t}</span><span class="s1">&quot; target=_blank&gt;</span><span class="si">{t}</span><span class="s1">&lt;/a&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">target</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="iframe_url"><a class="viewcode-back" href="../../api.html#notutils.iframe_url">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">iframe_url</span><span class="p">(</span>
+    <span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> 
+    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">400</span><span class="p">,</span> 
+    <span class="n">scrolling</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+    <span class="n">border</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> 
+    <span class="n">frameborder</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce an iframe for displaying an item in HTML window.</span>
+<span class="sd">    </span>
+<span class="sd">    :param target: The target URL</span>
+<span class="sd">    :type target: str</span>
+<span class="sd">    :param width: The width of the iframe (default 500)</span>
+<span class="sd">    :type width: int</span>
+<span class="sd">    :param height: The height of the iframe (default 400)</span>
+<span class="sd">    :type height: int</span>
+<span class="sd">    :param scrolling: Whether or not to allow scrolling (default True)</span>
+<span class="sd">    :type scrolling: bool</span>
+<span class="sd">    :param border: Width of the border</span>
+<span class="sd">    :type border: int</span>
+<span class="sd">    :param frameborder: Width of the frameborder</span>
+<span class="sd">    :type frameborder: int</span>
+<span class="sd">    :return: HTML iframe string</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">&quot;http://&quot;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">target</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="sa">u</span><span class="s2">&quot;&quot;</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">target</span>
+    <span class="k">if</span> <span class="n">scrolling</span><span class="p">:</span>
+        <span class="n">scroll_val</span> <span class="o">=</span> <span class="s2">&quot;yes&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">scroll_val</span> <span class="o">=</span> <span class="s2">&quot;no&quot;</span>
+    <span class="k">return</span> <span class="sa">u</span><span class="s1">&#39;&lt;iframe frameborder=&quot;</span><span class="si">{frameborder}</span><span class="s1">&quot; scrolling=&quot;</span><span class="si">{scrolling}</span><span class="s1">&quot; style=&quot;border:</span><span class="si">{border}</span><span class="s1">px&quot; src=&quot;</span><span class="si">{url}</span><span class="s1">&quot;, width=</span><span class="si">{width}</span><span class="s1"> height=</span><span class="si">{height}</span><span class="s1">&gt;&lt;/iframe&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">frameborder</span><span class="o">=</span><span class="n">frameborder</span><span class="p">,</span>
+        <span class="n">scrolling</span><span class="o">=</span><span class="n">scroll_val</span><span class="p">,</span>
+        <span class="n">border</span><span class="o">=</span><span class="n">border</span><span class="p">,</span>
+        <span class="n">url</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="display_iframe_url"><a class="viewcode-back" href="../../api.html#notutils.display_iframe_url">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">display_iframe_url</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display the contents of a URL in an IPython notebook.</span>
+<span class="sd">    </span>
+<span class="sd">    :param target: The target URL</span>
+<span class="sd">    :type target: str</span>
+
+<span class="sd">    .. seealso:: :func:`iframe_url` for additional arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">txt</span> <span class="o">=</span> <span class="n">iframe_url</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">txt</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="display_google_book"><a class="viewcode-back" href="../../api.html#notutils.display_google_book">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">display_google_book</span><span class="p">(</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+    <span class="n">page</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span> 
+    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">450</span><span class="p">,</span> 
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display an embedded version of a Google book.</span>
+<span class="sd">    </span>
+<span class="sd">    :param id: The ID of the Google book to display</span>
+<span class="sd">    :type id: str</span>
+<span class="sd">    :param page: The start page for the book</span>
+<span class="sd">    :type page: str or int, optional</span>
+<span class="sd">    :param width: The width of the embedded book (default 600)</span>
+<span class="sd">    :type width: int</span>
+<span class="sd">    :param height: The height of the embedded book (default 450)</span>
+<span class="sd">    :type height: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://books.google.co.uk/books?id=</span><span class="si">{id}</span><span class="s2">&amp;pg=PA</span><span class="si">{page}</span><span class="s2">&amp;output=embed&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="n">page</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://books.google.co.uk/books?id=</span><span class="si">{id}</span><span class="s2">&amp;pg=</span><span class="si">{page}</span><span class="s2">&amp;output=embed&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">,</span> <span class="n">page</span><span class="o">=</span><span class="n">page</span>
+        <span class="p">)</span>
+    <span class="n">IFrame</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="code_toggle"><a class="viewcode-back" href="../../api.html#notutils.code_toggle">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">code_toggle</span><span class="p">(</span><span class="n">start_show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Toggle code visibility on and off in a notebook.</span>
+<span class="sd">    </span>
+<span class="sd">    The tip that this idea is based on is from Damian Kao (http://blog.nextgenetics.net/?e=102).</span>
+<span class="sd">    </span>
+<span class="sd">    :param start_show: Whether to display the code or not on first load (default False)</span>
+<span class="sd">    :type start_show: bool</span>
+<span class="sd">    :param message: The message used to toggle display of the code</span>
+<span class="sd">    :type message: str, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;&lt;script&gt;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="n">message</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">u</span><span class="s2">&quot;The raw code for this jupyter notebook can be hidden for easier reading.&quot;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">start_show</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="sa">u</span><span class="s2">&quot;code_show=true;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">html</span> <span class="o">+=</span> <span class="sa">u</span><span class="s2">&quot;code_show=false;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="s2">&quot;&quot;&quot;function code_toggle() {</span>
+<span class="s2"> if (code_show){</span>
+<span class="s2"> $(&#39;div.input&#39;).show();</span>
+<span class="s2"> } else {</span>
+<span class="s2"> $(&#39;div.input&#39;).hide();</span>
+<span class="s2"> }</span>
+<span class="s2"> code_show = !code_show</span>
+<span class="s2">} </span>
+<span class="s2">$( document ).ready(code_toggle);</span>
+<span class="s2">&lt;/script&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">html</span> <span class="o">+=</span> <span class="p">(</span>
+        <span class="n">message</span>
+        <span class="o">+</span> <span class="s1">&#39; To toggle on/off the raw code, click &lt;a href=&quot;javascript:code_toggle()&quot;&gt;here&lt;/a&gt;.&#39;</span>
+    <span class="p">)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">html</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="display_prediction"><a class="viewcode-back" href="../../api.html#notutils.display_prediction">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">display_prediction</span><span class="p">(</span>
+    <span class="n">basis</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]],</span>
+    <span class="n">num_basis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">wlim</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+    <span class="n">fig</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ax</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">xlim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ylim</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">num_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+    <span class="n">offset</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Interactive widget for displaying a prediction function based on summing separate basis functions.</span>
+<span class="sd">    </span>
+<span class="sd">    :param basis: A function handle that calls the basis functions</span>
+<span class="sd">    :type basis: callable or dict</span>
+<span class="sd">    :param num_basis: Number of basis functions to use (default 4)</span>
+<span class="sd">    :type num_basis: int</span>
+<span class="sd">    :param wlim: Limits for the basis function weights (default (-1.0, 1.0))</span>
+<span class="sd">    :type wlim: tuple of float</span>
+<span class="sd">    :param fig: Matplotlib figure object (optional)</span>
+<span class="sd">    :type fig: matplotlib.figure.Figure, optional</span>
+<span class="sd">    :param ax: Matplotlib axes object (optional)</span>
+<span class="sd">    :type ax: matplotlib.axes.Axes, optional</span>
+<span class="sd">    :param xlim: Limits of the x axis to use (optional)</span>
+<span class="sd">    :type xlim: tuple of float, optional</span>
+<span class="sd">    :param ylim: Limits of the y axis to use (optional)</span>
+<span class="sd">    :type ylim: tuple of float, optional</span>
+<span class="sd">    :param num_points: Number of points to plot (default 1000)</span>
+<span class="sd">    :type num_points: int</span>
+<span class="sd">    :param offset: Offset for the first basis function (default 0.0)</span>
+<span class="sd">    :type offset: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">pylab</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+    <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">xlim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xlim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ylim</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ylim</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ylim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="c1"># initialise X and set up W arguments.</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_points</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">num_points</span><span class="p">)</span>
+    <span class="n">param_args</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_basis</span><span class="p">):</span>
+        <span class="n">lim</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">wlim</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">lim</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">offset</span>
+            <span class="n">lim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">offset</span>
+        <span class="n">param_args</span><span class="p">[</span><span class="s2">&quot;w_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">lim</span><span class="p">)</span>
+
+    <span class="c1"># helper function for making basis prediction.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict_basis</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">basis</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">num_basis</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">Phi</span> <span class="o">=</span> <span class="n">basis</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">num_basis</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Phi</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">Phi</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">basis</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">use_basis</span> <span class="o">=</span> <span class="n">basis</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">basis</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">use_basis</span> <span class="o">=</span> <span class="n">basis</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">Phi</span> <span class="o">=</span> <span class="n">predict_basis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_basis</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">use_basis</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">num_basis</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">predline</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">basislines</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_basis</span><span class="p">):</span>
+            <span class="n">basislines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Phi</span><span class="p">[:,</span> <span class="n">i</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylim</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="n">xlim</span><span class="p">)</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">generate_function</span><span class="p">(</span>
+            <span class="n">basis</span><span class="p">,</span>
+            <span class="n">num_basis</span><span class="p">,</span>
+            <span class="n">predline</span><span class="p">,</span>
+            <span class="n">basislines</span><span class="p">,</span>
+            <span class="n">basis_args</span><span class="p">,</span>
+            <span class="n">display_basis</span><span class="p">,</span>
+            <span class="n">offset</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">):</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_basis</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_basis</span><span class="p">):</span>
+                <span class="n">w</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;w_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span>
+            <span class="n">f</span><span class="p">,</span> <span class="n">Phi</span> <span class="o">=</span> <span class="n">predict_basis</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">basis</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">num_basis</span><span class="p">,</span> <span class="o">**</span><span class="n">basis_args</span><span class="p">)</span>
+            <span class="n">predline</span><span class="o">.</span><span class="n">set_xdata</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+            <span class="n">predline</span><span class="o">.</span><span class="n">set_ydata</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_basis</span><span class="p">):</span>
+                <span class="n">basislines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xdata</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span>
+                <span class="n">basislines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_ydata</span><span class="p">(</span><span class="n">Phi</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span>
+
+            <span class="k">if</span> <span class="n">display_basis</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_basis</span><span class="p">):</span>
+                    <span class="n">basislines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># make visible</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_basis</span><span class="p">):</span>
+                    <span class="n">basislines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_alpha</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">display</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">basis</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">basis</span> <span class="o">=</span> <span class="n">fixed</span><span class="p">(</span><span class="n">basis</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+        <span class="n">interact</span><span class="p">(</span>
+            <span class="n">generate_function</span><span class="p">,</span>
+            <span class="n">basis</span><span class="o">=</span><span class="n">basis</span><span class="p">,</span>
+            <span class="n">num_basis</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">num_basis</span><span class="p">),</span>
+            <span class="n">predline</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">predline</span><span class="p">),</span>
+            <span class="n">basislines</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">basislines</span><span class="p">),</span>
+            <span class="n">basis_args</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">kwargs</span><span class="p">),</span>
+            <span class="n">offset</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">offset</span><span class="p">),</span>
+            <span class="n">display_basis</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">param_args</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="display_plots"><a class="viewcode-back" href="../../api.html#notutils.display_plots">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">display_plots</span><span class="p">(</span>
+    <span class="n">filebase</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+    <span class="n">directory</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+    <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span> 
+    <span class="n">height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">450</span><span class="p">,</span> 
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Display a series of plots controlled by sliders.</span>
+<span class="sd">    </span>
+<span class="sd">    The function relies on Python string format functionality to index through a series of plots.</span>
+<span class="sd">    </span>
+<span class="sd">    :param filebase: Base filename with format placeholders for indexing</span>
+<span class="sd">    :type filebase: str</span>
+<span class="sd">    :param directory: Directory containing the plot files (optional)</span>
+<span class="sd">    :type directory: str, optional</span>
+<span class="sd">    :param width: Width of the displayed plots (default 600)</span>
+<span class="sd">    :type width: int</span>
+<span class="sd">    :param height: Height of the displayed plots (default 450)</span>
+<span class="sd">    :type height: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">show_figure</span><span class="p">(</span><span class="n">filebase</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">directory</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">width</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">600</span><span class="p">,</span> <span class="n">height</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">450</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper function to load in the relevant plot for display.</span>
+<span class="sd">        </span>
+<span class="sd">        :param filebase: Base filename with format placeholders</span>
+<span class="sd">        :type filebase: str</span>
+<span class="sd">        :param directory: Directory containing the plot files</span>
+<span class="sd">        :type directory: str, optional</span>
+<span class="sd">        :param width: Width of the displayed plot</span>
+<span class="sd">        :type width: int</span>
+<span class="sd">        :param height: Height of the displayed plot</span>
+<span class="sd">        :type height: int</span>
+<span class="sd">        :param **kwargs: Format arguments for the filename</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filebase</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">filebase</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">directory</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">directory</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">filename</span>
+        <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;.svg&quot;</span><span class="p">:</span>
+            <span class="n">display</span><span class="p">(</span><span class="n">SVG</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{filename}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)))</span>
+        <span class="k">elif</span> <span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="s2">&quot;.jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;.gif&quot;</span><span class="p">,</span> <span class="s2">&quot;.jpeg&quot;</span><span class="p">]:</span>
+            <span class="n">display</span><span class="p">(</span>
+                <span class="n">Image</span><span class="p">(</span>
+                    <span class="n">data</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{filename}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">),</span>
+                    <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+                    <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;.html&quot;</span><span class="p">]:</span>
+            <span class="n">display</span><span class="p">(</span>
+                <span class="n">IFrame</span><span class="p">(</span>
+                    <span class="n">src</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{filename}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">),</span>
+                    <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+                    <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+    <span class="n">interact</span><span class="p">(</span>
+        <span class="n">show_figure</span><span class="p">,</span>
+        <span class="n">filebase</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">filebase</span><span class="p">),</span>
+        <span class="n">directory</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">directory</span><span class="p">),</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">width</span><span class="p">),</span>
+        <span class="n">height</span><span class="o">=</span><span class="n">fixed</span><span class="p">(</span><span class="n">height</span><span class="p">),</span>
+        <span class="o">**</span><span class="n">kwargs</span>
+    <span class="p">)</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Neil D. Lawrence.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
