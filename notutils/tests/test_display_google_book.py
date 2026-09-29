@@ -9,8 +9,9 @@ from notutils import display_google_book
 class TestDisplayGoogleBook:
     """Test cases for display_google_book function."""
 
+    @patch('notutils.notutils.display')
     @patch('notutils.notutils.IFrame')
-    def test_display_google_book_basic(self, mock_iframe):
+    def test_display_google_book_basic(self, mock_iframe, mock_display):
         book_id = "test123"
         display_google_book(book_id)
         mock_iframe.assert_called_once()
@@ -20,11 +21,14 @@ class TestDisplayGoogleBook:
         assert "books.google.co.uk/books" in url
         assert f"id={book_id}" in url
         assert "output=embed" in url
+        assert "pg=" not in url
         assert kwargs['width'] == 600
         assert kwargs['height'] == 450
+        mock_display.assert_called_once_with(mock_iframe.return_value)
 
+    @patch('notutils.notutils.display')
     @patch('notutils.notutils.IFrame')
-    def test_display_google_book_with_int_page(self, mock_iframe):
+    def test_display_google_book_with_int_page(self, mock_iframe, mock_display):
         book_id = "test123"
         page = 42
         display_google_book(book_id, page=page)
@@ -34,9 +38,11 @@ class TestDisplayGoogleBook:
         kwargs = call_args.kwargs
         assert f"pg=PA{page}" in url
         assert f"id={book_id}" in url
+        mock_display.assert_called_once_with(mock_iframe.return_value)
 
+    @patch('notutils.notutils.display')
     @patch('notutils.notutils.IFrame')
-    def test_display_google_book_with_string_page(self, mock_iframe):
+    def test_display_google_book_with_string_page(self, mock_iframe, mock_display):
         book_id = "test123"
         page = "PR5"
         display_google_book(book_id, page=page)
@@ -46,6 +52,7 @@ class TestDisplayGoogleBook:
         kwargs = call_args.kwargs
         assert f"pg={page}" in url
         assert f"id={book_id}" in url
+        mock_display.assert_called_once_with(mock_iframe.return_value)
 
     @patch('notutils.notutils.IFrame')
     def test_display_google_book_custom_dimensions(self, mock_iframe):

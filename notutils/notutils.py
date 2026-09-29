@@ -96,7 +96,9 @@ def display_google_book(
     :param height: The height of the embedded book (default 450)
     :type height: int
     """
-    if isinstance(page, int):
+    if page is None:
+        url = "https://books.google.co.uk/books?id={id}&output=embed".format(id=id)
+    elif isinstance(page, int):
         url = "https://books.google.co.uk/books?id={id}&pg=PA{page}&output=embed".format(
             id=id, page=page
         )
@@ -104,7 +106,8 @@ def display_google_book(
         url = "https://books.google.co.uk/books?id={id}&pg={page}&output=embed".format(
             id=id, page=page
         )
-    IFrame(url, width=width, height=height, **kwargs)
+    # Must call display(); constructing IFrame alone does not render in Jupyter/Colab.
+    display(IFrame(url, width=width, height=height, **kwargs))
 
 
 def code_toggle(start_show: bool = False, message: Optional[str] = None) -> None:
