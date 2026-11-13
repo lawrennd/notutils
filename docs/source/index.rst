@@ -28,8 +28,8 @@ Installation
 
    pip install notutils
 
-   # or with Poetry
-   poetry add notutils
+   # or with uv
+   uv add notutils
 
 .. toctree::
    :maxdepth: 2
