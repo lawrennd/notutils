@@ -1,7 +1,7 @@
 ---
 id: "2025-07-13_github-actions-pypi-release"
 title: "Set up GitHub Actions for automated PyPI release via uv on new version tag"
-status: "proposed"
+status: "In Progress"
 priority: "high"
 created: "2025-07-13"
 last_updated: "2026-11-13"
@@ -36,14 +36,14 @@ The workflow should:
 
 ## Acceptance Criteria
 
-- [ ] GitHub Actions workflow file created in `.github/workflows/`
-- [ ] Workflow triggers on new version tag (e.g., v1.2.3)
-- [ ] Package is built using uv
-- [ ] Package is published to PyPI using a secure token
-- [ ] Release only occurs on main branch
-- [ ] Build artifacts uploaded for review (optional)
-- [ ] Release status and errors reported in GitHub interface
-- [ ] Workflow runs in under 5 minutes
+- [x] GitHub Actions workflow file created in `.github/workflows/publish.yml`
+- [x] Workflow triggers on GitHub Release published (tag `vX.Y.Z`)
+- [x] Package is built using uv
+- [x] Package is published to PyPI using `UV_PUBLISH_TOKEN` / `PYPI_API_TOKEN`
+- [x] Uses `release` environment
+- [x] Build artifacts uploaded for review
+- [ ] Release status and errors reported in GitHub interface (validate on first release)
+- [ ] Workflow runs in under 5 minutes (validate on first release)
 - [ ] Documentation updated to describe release process
 
 ## Implementation Notes
@@ -80,10 +80,13 @@ The workflow should:
 ## Related
 
 - CIP: 0002 (Comprehensive Testing Framework), 0003 (Migrate from Poetry to uv)
-- PRs: 
+- PRs: [#1](https://github.com/lawrennd/notutils/pull/1)
 - Documentation: [uv publishing](https://docs.astral.sh/uv/guides/publish/), [GitHub Actions Documentation](https://docs.github.com/en/actions), [PyPI Publishing](https://pypi.org/help/#uploading)
 
 ## Progress Updates
 
 ### 2025-07-13
-Task created with Proposed status. Waiting for implementation of CIP-0002 and PyPI token setup before proceeding. 
+Task created with Proposed status. Waiting for implementation of CIP-0002 and PyPI token setup before proceeding.
+
+### 2026-11-13
+Reworked PR #1 onto post-CIP-0003 `main`: `publish.yml` now uses `astral-sh/setup-uv`, `uv sync` / `uv run pytest` / `uv build` / `uv publish`, and checks `[project].version` against the release tag. 
