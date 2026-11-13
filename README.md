@@ -25,16 +25,14 @@ Jupyter Notebook Utilities for Python
 
 ## Installation
 
-You can install notutils using [Poetry](https://python-poetry.org/) or pip:
-
-### Using Poetry
-```bash
-poetry add notutils
-```
-
-### Using pip
+### With pip
 ```bash
 pip install notutils
+```
+
+### With uv (optional)
+```bash
+uv add notutils
 ```
 
 > **Note:** notutils requires Python 3.9 or later. It depends on `IPython`, `ipywidgets`, `matplotlib`, and `numpy`.
@@ -84,20 +82,24 @@ from notutils import display_prediction
 
 ## Development & Contributing
 
+Contributor tooling uses [uv](https://docs.astral.sh/uv/). Install uv first if you do not already have it.
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/lawrennd/notutils.git
    cd notutils
    ```
-2. Install dependencies:
+2. Install dependencies (creates `.venv` and installs the `dev` group by default):
    ```bash
-   poetry install
+   uv sync
    ```
 3. Run tests:
    ```bash
-   poetry run pytest
+   uv run pytest
    ```
 4. See the [backlog](backlog/index.md) and [CIPs](cip/README.md) for project planning and improvement proposals.
+
+End users can keep using `pip install -e .` from a clone; uv is the maintainer and CI path.
 
 Contributions are welcome! Please open issues or pull requests for bugs, features, or documentation improvements.
 

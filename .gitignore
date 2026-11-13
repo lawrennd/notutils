@@ -46,8 +46,10 @@ env/
 .DS_Store
 Thumbs.db
 
-# Poetry
+# Legacy Poetry lockfile (removed in CIP-0003; do not reintroduce)
 poetry.lock
+
+# uv.lock is committed so CI and contributors share the same resolve
 
 # Temporary files
 *.code-workspace~ 

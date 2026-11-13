@@ -1,32 +1,33 @@
 ---
 id: "2025-07-13_github-actions-pypi-release"
-title: "Set up GitHub Actions for automated PyPI release via Poetry on new version tag"
+title: "Set up GitHub Actions for automated PyPI release via uv on new version tag"
 status: "proposed"
 priority: "high"
 created: "2025-07-13"
-last_updated: "2025-07-13"
+last_updated: "2026-11-13"
 owner: "Neil Lawrence"
 github_issue: ""
 dependencies:
   - "CIP-0002"
+  - "CIP-0003"
 tags:
   - "backlog"
   - "infrastructure"
   - "ci-cd"
   - "release"
-  - "poetry"
+  - "uv"
   - "pypi"
 ---
 
-# Task: Set up GitHub Actions for automated PyPI release via Poetry on new version tag
+# Task: Set up GitHub Actions for automated PyPI release via uv on new version tag
 
 ## Description
 
-Implement a GitHub Actions workflow to automatically build and publish the package to PyPI using Poetry whenever a new version tag is pushed to the repository. This will streamline the release process, reduce manual errors, and ensure that new versions are published promptly.
+Implement a GitHub Actions workflow to automatically build and publish the package to PyPI using uv whenever a new version tag is pushed to the repository. This will streamline the release process, reduce manual errors, and ensure that new versions are published promptly. Packaging tooling moved from Poetry to uv in CIP-0003.
 
 The workflow should:
 - Trigger on new version tags (e.g., v1.2.3)
-- Build the package using Poetry
+- Build the package using uv
 - Publish the package to PyPI using a secure token
 - Run on the main branch only
 - Provide clear feedback on release status and errors
@@ -37,7 +38,7 @@ The workflow should:
 
 - [ ] GitHub Actions workflow file created in `.github/workflows/`
 - [ ] Workflow triggers on new version tag (e.g., v1.2.3)
-- [ ] Package is built using Poetry
+- [ ] Package is built using uv
 - [ ] Package is published to PyPI using a secure token
 - [ ] Release only occurs on main branch
 - [ ] Build artifacts uploaded for review (optional)
@@ -51,11 +52,11 @@ The workflow should:
 1. *Workflow Structure*:
    - Use `ubuntu-latest` as the runner
    - Trigger on `push` to tags matching `v*.*.*`
-   - Use Poetry for build and publish
+   - Use uv for build and publish
 
 2. *PyPI Publishing*:
-   - Use `POETRY_PYPI_TOKEN_PYPI` secret for authentication
-   - Build and publish with `poetry build` and `poetry publish`
+   - Use `UV_PUBLISH_TOKEN` (from `secrets.PYPI_API_TOKEN`) for authentication
+   - Build and publish with `uv build` and `uv publish` (CIP-0003 succeeded Poetry for packaging)
    - Ensure version in `pyproject.toml` matches tag
 
 3. *Error Handling*:
@@ -68,19 +69,19 @@ The workflow should:
 
 ### Dependencies
 - Requires implementation of CIP-0002 (Comprehensive Testing Framework)
-- Poetry must be configured for publishing
+- uv must be available in the release job (`astral-sh/setup-uv`)
 - PyPI token must be added to GitHub secrets
 
 ### Configuration Files Needed
 - `.github/workflows/release.yml` - Main release workflow
 - `pyproject.toml` - Ensure versioning is correct
-- Poetry configuration for publishing
+- `uv.lock` - Committed lockfile from CIP-0003
 
 ## Related
 
-- CIP: 0002 (Comprehensive Testing Framework)
+- CIP: 0002 (Comprehensive Testing Framework), 0003 (Migrate from Poetry to uv)
 - PRs: 
-- Documentation: [Poetry Publishing](https://python-poetry.org/docs/publishing/), [GitHub Actions Documentation](https://docs.github.com/en/actions), [PyPI Publishing](https://pypi.org/help/#uploading)
+- Documentation: [uv publishing](https://docs.astral.sh/uv/guides/publish/), [GitHub Actions Documentation](https://docs.github.com/en/actions), [PyPI Publishing](https://pypi.org/help/#uploading)
 
 ## Progress Updates
 
